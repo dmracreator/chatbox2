@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .chatbox-container {
+            width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .chat-message {
+            background-color: #FFC0CB; /* roze tint */
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .chat-input {
+            display: flex;
+        }
+
+        .chat-input input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #FFC0CB; /* roze rand */
+            border-radius: 5px 0 0 5px;
+            font-size: 14px;
+            color: black; /* zwarte tekst */
+        }
+
+        .chat-input button {
+            background-color: #FFC0CB; /* roze tint */
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .chat-input button:hover {
+            background-color: #FF69B4; /* iets donkerder roze */
+        }
+
+        .chat-message span.timestamp {
+            display: block;
+            font-size: 12px;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chatbox-container">
+        <div class="chat-messages" id="chat-messages">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chat-input" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Accessing Wix API for script
+        Wix.window.onReady(function() {
+            const chatInput = document.getElementById('chat-input');
+            const sendButton = document.getElementById('send-button');
+            const chatMessages = document.getElementById('chat-messages');
+
+            // Function to send the message
+            function sendMessage() {
+                const messageText = chatInput.value.trim();
+                if (messageText) {
+                    const message = document.createElement('div');
+                    message.className = 'chat-message';
+                    const timestamp = new Date().toLocaleString();
+                    message.innerHTML = `${messageText}<span class="timestamp">${timestamp}</span>`;
+                    chatMessages.appendChild(message);
+                    chatInput.value = '';
+                    chatMessages.scrollTop = chatMessages.scrollHeight; // scroll naar beneden
+                }
+            }
+
+            // Send message when the button is clicked
+            sendButton.addEventListener('click', sendMessage);
+
+            // Send message when Enter is pressed
+            chatInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // voorkom dat de standaard enter actie gebeurt
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+
+</body>
